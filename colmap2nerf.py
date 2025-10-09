@@ -338,7 +338,7 @@ if __name__ == "__main__":
                 # why is this requireing a relitive path while using ^
                 image_rel = os.path.relpath(IMAGE_FOLDER)
                 name = str(f"./{image_rel}/{'_'.join(elems[9:])}")
-                relname = str(f"./images/{'_'.join(elems[9:])}")
+                relname = str(f"./undistortion_images/{'_'.join(elems[9:])}")
                 b = sharpness(name)
                 print(name, "sharpness=",b)
                 image_id = int(elems[0])

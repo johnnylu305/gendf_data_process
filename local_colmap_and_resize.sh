@@ -69,12 +69,21 @@ colmap mapper \
 ### Image undistortion
 
 ## Use this if you want to undistort your images into ideal pinhole intrinsics.
-# mkdir -p "$DATASET_PATH"/dense
-# colmap image_undistorter \
-#     --image_path "$DATASET_PATH"/images \
-#     --input_path "$DATASET_PATH"/sparse/0 \
-#     --output_path "$DATASET_PATH"/dense \
-#     --output_type COLMAP
+mkdir -p "$DATASET_PATH"/tmp
+colmap image_undistorter \
+     --image_path "$DATASET_PATH"/images \
+     --input_path "$DATASET_PATH"/sparse/0 \
+     --output_path "$DATASET_PATH"/tmp \
+     --output_type COLMAP
+
+## reorganize
+mkdir -p "$DATASET_PATH"/undistortion_sparse/0/
+mv "$DATASET_PATH"/tmp/sparse/* "$DATASET_PATH"/undistortion_sparse/0/
+mv "$DATASET_PATH"/tmp/images "$DATASET_PATH"/undistortion_images
+
+## save space
+rm -rf "$DATASET_PATH"/database.db
+rm -rf "$DATASET_PATH"/tmp
 
 # Resize images.
 

@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # ====== EDIT THIS ======
-BASE_DIR = Path("/home/johnny305/Documents/gendf/Data_CY_New")
+BASE_DIR = Path("/home/johnny305/Documents/gendf/002")
 # =======================
 
 def load_frames_count(json_path: Path) -> int:

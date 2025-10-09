@@ -5,7 +5,7 @@ from datetime import datetime
 from PIL import Image  # pip install pillow
 
 # ===== User config =====
-ROOT_DATASET_DIR = f"./310525-OliveOil"   # Parent folder containing scene folders like "040625-LundoBin"
+ROOT_DATASET_DIR = f"./310825-TownhallTree"   # Parent folder containing scene folders like "040625-LundoBin"
 OUTPUT_JSON_PATH = f"./{ROOT_DATASET_DIR}/meta.json"
 DEFAULT_ENVIRONMENT = "unknown"
 # ========================
@@ -77,16 +77,16 @@ def build_scene(scene_dir: Path, root: Path):
         print(low)
 
         if low.endswith("-clean"):
-            entry["theme"] = ["oil"]  
-            # apple, bag, bike bell, beer, bench, bread, brush, bin, box, bike, bikes, building, bridge, cathedral, candle, can, cake, cutlery cup, coffee, cone, container, cylinder, cup, decoration, detergent, display, drawer, drink, drawing, dish, eardrop, flower, fruit, glass bottle, grass pot
-            # grinder, hallway, heater, intersection, jar, juice, kettle, lamp, light pole, oil, power transformer, pot, pack, package, plush toy, pole, plant, platform, plate, rice pack, rice cooker, rock, sauce, snail, spice, stool, shop, sign, soy sauce
-            # table, tea cup, toy, toaster, umbrella, vitamin water, vegetables, water bottle, water fountain, window
+            entry["theme"] = ["tree"]
+            # apple, bag, bike bell, beer, bench, bread, brush, bin, box, bike, bikes, building, bridge, cathedral, candle, can, car, cake, cutlery cup, clothes, coffee, cane, cone, comb, container, cylinder, cup, cross light, counter, daily objects, decoration, detergent, display, drawer, drink, drawing, dish, eardrop, entrance, fan, flower, fruit, gate, glass bottle, grass pot
+            # grinder, hallway, heater, headphone, intersection, jar, juice, kettle, kitchen lamp, light pole, massage gun, mug, nouse, oil, orange, power transformer, pot, power bank, pack, package, plush toy, pillow, pole, plant, platform, plate, razor, rice pack, rice cooker, rock, sauce, snail, spice, stool, shop, sign, soy sauce, soup
+            # sqare, safe, seat, scissor, scale, speaker, spray, table, tree, tea cup, toy, toaster, tube, umbrella, vitamin water, vegetables, wallet, watch, water bottle, water fountain, window
             entry["images"] = imgs    # put images at the end
             clean_data = entry
         elif low.endswith("-clutter"):
-            entry["distractors"] = ["key", "hand"] 
-            # arm, bag, bike, bird, bus, candy, can, candle chopsticks, cup, dog, eyedrop, fan, feet, hand, human, key, knife, leaf, leg, lollipop, lighter, light rail,
-            # necklace, mat, motorbike, mouse, orange, package, pencil, phone, plastic bag, plane, plate, scissor, spoon, spice, scarf trimmer, soy sauce, tube, tissue, umbrella
+            entry["distractors"] = ["bird", "car", "human"] 
+            # arm, bag, bike, bird, bus, box, candy, can, cane, car, candle, cloth, chopsticks, cup, charger, comb, chair, dog, disk, eyedrop, fan, feet, hand, human, key, jar, knife, leaf, leg, lollipop, lighter, light rail,
+            # mat, motorbike, mouse, necklace, orange, package, pencil, phone, plastic bag, plane, plate, pillow, razor, scissor, spoon, spice, scarf trimmer, soy sauce, tube, tissue, truck, umbrella
             # vegetable, rope, tape, tag, toy, watch, wet wipe
             entry["images"] = imgs
             clutter_data = entry        
@@ -102,13 +102,13 @@ def build_scene(scene_dir: Path, root: Path):
         "scene_date_raw": date_raw,
         "scene_date_iso": date_iso,
         "mode": "face_forward",       # face_forward, 360_degree, unknown
-        "orientation": "portrait",   # landscape, portrait
+        "orientation": "landscape",   # landscape, portrait
         "device": "iPhone 15",        # iPhone 15, Galaxy A15, iPad Air (5th generation), OPPO A17
         "resolution": res_str,
-        "region": " Denmark",          # Australia, Denmark, Japan, Taiwan
-        "time_of_day": "unknown",     # daytime, nighttime, unknown
-        "environment": "indoor",     # indoor, outdoor
-        "environment_fine": "studio", # bedroom, cathedral, courtyard, cafe, garden, hallway, hotel, restaurant, park, parking lot, living room, studio, shop, street, super market, station, kitchen
+        "region": " Australia",          # Australia, Denmark, Japan, Taiwan
+        "time_of_day": "nighttime",     # daytime, nighttime, unknown
+        "environment": "outdoor",     # indoor, outdoor
+        "environment_fine": "street" , # bedroom, cathedral, courtyard, cafe, garden, gym, hallway, hotel, restaurant, park, parking lot, living room, studio, shop, street, super market, station, kitchen
         "root_folder": str(root),
         "total_images": total_images,
         "clean": clean_data,
