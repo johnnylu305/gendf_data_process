@@ -89,8 +89,8 @@ colmap mapper \
     --database_path "$DATASET_PATH"/database.db \
     --image_path "$DATASET_PATH"/images \
     --output_path "$DATASET_PATH"/sparse \
-    --Mapper.abs_pose_min_num_inliers=30 \
-    --Mapper.max_reg_trials=20 \
+    --Mapper.abs_pose_min_num_inliers=35 \
+    --Mapper.max_reg_trials=4 \
     --Mapper.min_model_size=20 \
     --Mapper.ba_global_function_tolerance=0.000001
 
