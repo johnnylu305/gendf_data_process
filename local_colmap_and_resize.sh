@@ -25,14 +25,42 @@ CAMERA=${2:-OPENCV}
 # Run COLMAP.
 
 ### Feature extraction
+#colmap feature_extractor \
+#    --database_path "$DATASET_PATH"/database.db \
+#    --image_path "$DATASET_PATH"/images \
+#    --ImageReader.single_camera 1 \
+#    --ImageReader.camera_model "$CAMERA" \
+#    --SiftExtraction.max_num_features 12000 \
+#    --SiftExtraction.use_gpu "$USE_GPU"
 
-colmap feature_extractor \
+
+
+# GPU SIFT with 12000
+echo "🔹 Trying GPU SIFT with 12000 features..."
+if ! colmap feature_extractor \
     --database_path "$DATASET_PATH"/database.db \
     --image_path "$DATASET_PATH"/images \
     --ImageReader.single_camera 1 \
     --ImageReader.camera_model "$CAMERA" \
     --SiftExtraction.max_num_features 12000 \
-    --SiftExtraction.use_gpu "$USE_GPU"
+    --SiftExtraction.use_gpu 1; then
+
+    echo "SIFT 12000 failed, retrying with 8000..."
+
+    rm -rf "$DATASET_PATH"/sparse
+    rm -rf "$DATASET_PATH"/database.db
+
+    # CPU SIFT with 12000
+    colmap feature_extractor \
+        --database_path "$DATASET_PATH"/database.db \
+        --image_path "$DATASET_PATH"/images \
+        --ImageReader.single_camera 1 \
+        --ImageReader.camera_model "$CAMERA" \
+        --SiftExtraction.max_num_features 12000 \
+        --SiftExtraction.use_gpu 0
+fi
+
+echo "Feature extraction completed successfully."
 
 
 ### Feature matching
@@ -55,13 +83,14 @@ colmap exhaustive_matcher \
 
 # The default Mapper tolerance is unnecessarily large,
 # decreasing it speeds up bundle adjustment steps.
+# 35, 4, 20
 mkdir -p "$DATASET_PATH"/sparse
 colmap mapper \
     --database_path "$DATASET_PATH"/database.db \
     --image_path "$DATASET_PATH"/images \
     --output_path "$DATASET_PATH"/sparse \
-    --Mapper.abs_pose_min_num_inliers=35 \
-    --Mapper.max_reg_trials=4 \
+    --Mapper.abs_pose_min_num_inliers=30 \
+    --Mapper.max_reg_trials=20 \
     --Mapper.min_model_size=20 \
     --Mapper.ba_global_function_tolerance=0.000001
 
@@ -70,6 +99,8 @@ colmap mapper \
 
 ## Use this if you want to undistort your images into ideal pinhole intrinsics.
 mkdir -p "$DATASET_PATH"/tmp
+rm -rf "$DATASET_PATH"/undistortion_images
+rm -rf "$DATASET_PATH"/undistortion_sparse/0/
 colmap image_undistorter \
      --image_path "$DATASET_PATH"/images \
      --input_path "$DATASET_PATH"/sparse/0 \
